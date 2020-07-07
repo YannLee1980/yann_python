@@ -151,8 +151,36 @@ https://docs.python.org/zh-cn/3.7/library/multiprocessing.html#pipes-and-queues
 https://docs.python.org/zh-cn/3.7/library/multiprocessing.html#synchronization-between-processes
 
 #### 7. 多进程：进程池
+* 进程池的使用：
+  创建：`p = Pool(processes)`,processes为进程池的进程数
+  运行：`p.apply_async(func=run, args=(i,))`
+  结束： 
 
-
+        p.close()   
+        p.join()  # 进程池对象调用join，会等待进程池中所有的子进程结束完毕再去结束父进程，放在close或terminate的后面。
+        p.terminate()  
+* 注意：`close()`：如果我们用的是进程池，在调用`join()`之前必须要先`close()`，并且在`close()`之后不能再继续往进程池添加新的进程`join()`：进程池对象调用`join`，会等待进程池中所有的子进程结束完毕再去结束父进程.`terminate()`：一旦运行到此步，不管任务是否完成，立即终止。
+* `p.apply_async`VS.`p.apply`:
+  `p.apply_async`:异步运行；
+  `p.apply`:同步运行，也就顺序运行。
+* `p.close()` VS. `p.terminate()`:
+  `p.close()`:等待p完成才关闭；
+  `p.terminate()`:不等待p完成，直接中断。
+* 避免死锁：
+  注意逻辑和join放置的位置。
+* Pool的with写法：
+  
+      with Pool(processes=4) as p:
+        result = p.apply_async(func=f, args=(10,))
+        print(result.get(timeout=2))
+        result = p.apply_async(func=time.sleep, args=(10,))
+        print(result.get(timeout=1))
+* 进程池的map()、imap():
+  
+      with Pool(processes=4) as pool:         # 进程池包含4个进程
+        print(pool.map(f, range(10)))       # 输出 "[0, 1, 4,..., 81]"
+        it = pool.imap(f, range(10))        # map输出列表，imap输出迭代器             
+        print(next(it))   
 * 课程参考资料：
 >1. 获取课程源码操作方法：
 切换分支：git checkout 3c
@@ -160,6 +188,30 @@ https://docs.python.org/zh-cn/3.7/library/multiprocessing.html#synchronization-b
 https://docs.python.org/zh-cn/3.7/library/multiprocessing.html#module-multiprocessing.pool
 >3. 迭代器学习文档：
 https://docs.python.org/zh-cn/3.7/library/stdtypes.html#iterator-types
+
+#### 8. 多线程：创建线程
+* 概念：
+  1. 调用方
+    阻塞：  得到调用结果之前，线程会被挂起
+    非阻塞： 不能立即得到结果，不会阻塞线程
+  2. 被调用方 
+    同步： 得到结果之前，调用不会返回
+    异步： 请求发出后，调用立即返回，没有返回结果，通过回调函数得到实际结果
+  3. 并发、并行：
+    
+  4. 进程、线程的区别
+  5. 协程
+
+* 课程参考资料：
+>1. 获取课程源码操作方法：
+切换分支：git checkout 3c
+>2. 基于线程的并行学习文档：
+https://docs.python.org/zh-cn/3.7/library/threading.html
+>3. 基于进程的并行学习文档：
+https://docs.python.org/zh-cn/3.7/library/multiprocessing.html
+>4. 底层多线程 API：
+https://docs.python.org/zh-cn/3.7/library/_thread.html
+
 ### **学习心得：**
 
 
