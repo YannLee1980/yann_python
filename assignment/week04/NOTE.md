@@ -385,7 +385,18 @@ https://github.com/isnowfy/snownlp/blob/master/README.md
 #### 作业：
 * `SELECT id,COUNT(DISTINCT order_id) FROM table1 GROUP BY id;`:
   `table1.groupby('id')['order_id'].nunique()` #nunique()唯一值的个数。
-  
+* 用sqlalchemy链接数据库：
+
+      from sqlalchemy import create_engine
+      #建立与数据库的链接
+      engine = create_engine('mysql+pymysql://root:chenqiong@localhost:3306/week4_assignment')
+      #生成数据表data的数据
+      data = pd.DataFrame({
+      'id': range(1500),
+      'age': np.random.randint(20, 55, size=1500)
+      })
+      #导入到数据库data表中
+      data.to_sql('data', engine, if_exists='replace', index=False)
 
 ### 疑问：
 1. map的使用比较模糊！
