@@ -27,6 +27,9 @@
     selector = lxml.etree.HTML(resp.text)
     # 电影名称
     film_name = selector.xpath('//*[@id="content"]/h1/span[1]/text()')
+    # 包括：
+    film_name = details[0].xpath('./span[contains(@class,"name")]/text()').get()
+
 
 >scrapy框架：提供一套爬虫的专业框架方案，它由各个不同的组件构成。
 

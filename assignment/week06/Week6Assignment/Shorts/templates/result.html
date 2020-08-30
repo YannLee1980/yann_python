@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>电影《何以为家》3星以上（不含3星）影评</title>
+    </head>
+    <body>
+        <div>电影《何以为家》3星以上（不含3星）影评<br>
+       </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>星</th>
+                    <th>评论</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for short in shorts %}
+                    <tr>
+                        <td>{{short.star}}</td>
+                        <td>{{short.short}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
