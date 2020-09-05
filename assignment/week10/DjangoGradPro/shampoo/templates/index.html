@@ -1,0 +1,107 @@
+{% extends "base_layout.html" %} {% block title %}Welcom Yann!{% endblock %}
+{% load static %}
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/timeline.css' %}">
+    <link rel="stylesheet" href="{% static 'css/morris.css' %}">
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <a name="top"></a>
+        <div class="text-primary">
+            <h1>洗发水品牌调研 <small>排名前十的洗发水品牌</small></h1>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="list-group">
+            {% for name, count, anchor, _, _, _, _ in data %}
+                <a href={{ anchor }} class="list-group-item">
+                    <span class="badge">{{ count }}</span>
+                    {{ name }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- /.col-lg-9 -->
+</div>
+
+{% for name, _, _, index, shampoos, plu, minu in data %}
+<div class="row">
+    <div class="col-lg-12">
+        <a name={{ index }}></a>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <a class="navbar-brand">
+                            <i class="fa fa-bar-chart-o fa-fw"></i>
+                            {{ name }}
+                        </a>
+                        <p class="navbar-text navbar-right"><a href="#top" class="navbar-link">TOP</a></p>
+                    </div>
+                </nav>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>评论</th>
+                                    <th>日期</th>
+                                    <th>情感倾向</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for shampoo in shampoos %}
+                                    <tr>
+                                        <td>{{ shampoo.short }}</td>
+                                        <td>{{ shampoo.time }}</td>
+                                        <td>{{ shampoo.sentiment }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.col-lg-8 (nested) -->
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 正负比例
+                        </div>
+                        <div class="panel-body">
+                            <div id="morris-donut-chart-{{ index }}" lg05={{ plu }} lt05={{ minu }}></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-4 -->
+            </div>
+            <!-- /.row -->
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+
+    </div>
+</div>
+<!-- /.row -->
+{% endfor %}
+
+
+
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/raphael-min.js' %}"></script>
+    <script src="{% static 'js/morris.min.js' %}"></script>
+    <script src="{% static 'js/morris-data.js' %}"></script>
+{% endblock %}

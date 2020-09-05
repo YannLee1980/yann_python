@@ -11,11 +11,11 @@ class ShampooSpider(scrapy.Spider):
     allowed_domains = ['smzdm.com']
     start_urls = ['https://www.smzdm.com/fenlei/xifahufa/h5c4s0f0t0p1/#feed-main/']
 
-    #新建输出文件：
-    with open('./shampoo.csv', 'w+', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        #先写入columns_name
-        writer.writerow(['名称', '评论', '评论时间'])
+    # #新建输出文件：
+    # with open('./shampoo.csv', 'w+', encoding='utf-8') as f:
+    #     writer = csv.writer(f)
+    #     #先写入columns_name
+    #     writer.writerow(['名称', '评论', '评论时间'])
 
     def parse(self, response):
         selector = Selector(response=response)
