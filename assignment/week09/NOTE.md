@@ -177,7 +177,19 @@
 切换分支：git checkout 8b
 
 #### 17. Django相关功能-celery介绍：
-* 定时任务
+* 安装redis，设置文件redis.conf:
+  daemonize no :调试阶段
+  daemonize yes: 正式使用
+  bind 127.0.0.1 只对自己对机器，正式使用时：0.0.0.0 对所有的IP
+  requirepass 123456 是否需要密码认证，需要设置复杂密码
+  运行：redis-server /path/to/redis.conf
+* 定时任务celery安装：
+
+            pip install celery
+            pip install redis==2.10.6 
+            pip install celery-with-redis 
+            pip install django-celery
+* async冲突：python3.7后async作为关键字，包kombu改名
 * 课程参考资料 ：
     > 获取课程源码操作方法：
 切换分支：git checkout 9a

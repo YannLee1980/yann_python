@@ -9,13 +9,8 @@ import time
 class ShampooSpider(scrapy.Spider):
     name = 'shampoo'
     allowed_domains = ['smzdm.com']
-    start_urls = ['https://www.smzdm.com/fenlei/xifahufa/h5c4s0f0t0p1/#feed-main/']
-
-    # #新建输出文件：
-    # with open('./shampoo.csv', 'w+', encoding='utf-8') as f:
-    #     writer = csv.writer(f)
-    #     #先写入columns_name
-    #     writer.writerow(['名称', '评论', '评论时间'])
+    start_urls = [
+        'https://www.smzdm.com/fenlei/xifahufa/h5c4s0f0t0p1/#feed-main/']
 
     def parse(self, response):
         selector = Selector(response=response)
@@ -28,9 +23,11 @@ class ShampooSpider(scrapy.Spider):
         time.sleep(1)
         item = GradproItem()
         selector = Selector(response=response)
-        item['name'] = selector.xpath('//h1[@class="title J_title"]/text()').get().strip().replace(' ','')
+        item['name'] = selector.xpath(
+            '//h1[@class="title J_title"]/text()').get().strip().replace(' ', '')
         tags = selector.xpath('//div[@class="comment_conBox"]')
         for tag in tags:
-            item['time'] = tag.xpath('./div/div[@class="time"]/meta/@content').get()
+            item['time'] = tag.xpath(
+                './div/div[@class="time"]/meta/@content').get()
             item['short'] = tag.xpath('./div/div/p/span/text()').get()
             yield item

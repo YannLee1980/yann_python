@@ -8,6 +8,7 @@
 import pymysql
 from snownlp import SnowNLP
 
+# 数据库信息：
 DB_INFO = {
     'host': 'localhost',
     'port': 3306,
@@ -16,21 +17,21 @@ DB_INFO = {
     'db': 'gradpro',
 }
 
+# 数据库链接类：
 class ConnDB(object):
     def __init__(self, dbinfo):
         self.conn = pymysql.connect(
-            host = dbinfo['host'],
-            port = dbinfo['port'],
-            user = dbinfo['user'],
-            password = dbinfo['password'],
-            db = dbinfo['db'],
+            host=dbinfo['host'],
+            port=dbinfo['port'],
+            user=dbinfo['user'],
+            password=dbinfo['password'],
+            db=dbinfo['db'],
         )
-    
+
     def run(self, sql, *args):
         cur = self.conn.cursor()
         cur.execute(sql, args)
         self.conn.commit()
-
 
 
 class GradproPipeline:
@@ -45,15 +46,13 @@ class GradproPipeline:
         short = item['short']
         time = item['time']
 
+        # 对评论进行舆情分析，计算舆情值
         sentiment = SnowNLP(short).sentiments
-        
-        sql = 'INSERT INTO ' + 'shampoo_raw(name, short, time, sentiment)' + ' values(%s, %s, %s, %s)'
+
+        sql = 'INSERT INTO ' + \
+            'shampoo_raw(name, short, time, sentiment)' + \
+            ' values(%s, %s, %s, %s)'
 
         self.db.run(sql, name, short, time, sentiment)
-
-        # #把数据写入文档：
-        # with open('./shampoo.csv', 'a', encoding='utf-8') as f:
-        #     writer = csv.writer(f)
-        #     writer.writerow([name, short, time])
 
         return item

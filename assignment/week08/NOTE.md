@@ -46,8 +46,8 @@
 
 #### 2. 容器序列的深浅拷贝：
 * 序列分类
-    1. 容器序列:list、tuple、collections.deque 等，能存放不同类型的数据 容器序列可以存 放不同类型的数据。
-    2. 扁平序列:str、bytes、bytearray、memoryview (内存视图)、array.array 等，存放的 是相同类型的数据 扁平序列只能容纳一种类型。
+    1. 容器序列:list、tuple、collections.deque 等，能存放不同类型的数据 容器序列可以存 放不同类型的数据。----**有深浅拷贝之分**。
+    2. 扁平序列:str、bytes、bytearray、memoryview (内存视图)、array.array 等，存放的 是相同类型的数据 扁平序列只能容纳一种类型。----没有深浅拷贝之分。
 * 容器序列存在深拷贝、浅拷贝问题
     • 注意:非容器(数字、字符串、元组)类型没有拷贝问题
         
@@ -63,6 +63,9 @@
   `new_list3 = old_list[:]`:重新构建list对象，old_list的id不同。
 
 * Python assert（断言）用于判断一个表达式，在表达式条件为 false 的时候触发异常。
+* list的切片操作，其实是做了拷贝，但是**浅拷贝**：
+  
+                list2 = list1[:] : list2是list1的一个拷贝
 * 课程参考资料：
     > 获取课程源码操作方法：
 切换分支：git checkout 6a
@@ -136,6 +139,26 @@ https://docs.python.org/zh-cn/3.7/library/collections.html
   2. 顺序问题（运行顺序、查找顺序）。
 * 查找顺序:
   L -> E -> G -> B
+* global & nonlocal:
+    global关键字用来在函数或其他局部作用域中使用全局变量。
+
+        count = 0
+        def global_test():
+            global count
+            count += 1
+            print(count)
+        global_test()
+    nonlocal声明的变量不是局部变量,也不是全局变量,而是外部嵌套函数内的变量。
+
+        def func1():
+            x = 0
+            def func2():
+                nonlocal x
+                x += 1
+                return x
+            return func2
+        var = func1()
+        var()
 * 课程参考资料：
     > 获取课程源码操作方法：
 切换分支：git checkout 6c
@@ -145,9 +168,14 @@ https://docs.python.org/zh-cn/3.7/library/collections.html
   
         def func(*args, **kargs): 
             pass
-    kargs 获取关键字参数 
-    args 获取其他参数
+    kargs 获取关键字参数 -- 字典
+    args 获取其他参数 -- 元组
     注意：**位置参数要写在关键字参数的前面，固定写法**
+* lambda--是表达式（如：x+2），不是语句（如赋值语句）
+
+        # 以第元组里的二个元素排序：
+        l = [(1,10), (3,0), (9,10),(2,-1)]
+        l.sort(key=lambda x: x[1]) # key：接收函数。
 *  高阶函数：
     1. 高阶:参数是函数、返回值是函数 
     2. 常见的高阶函数:map、reduce、filter、apply
